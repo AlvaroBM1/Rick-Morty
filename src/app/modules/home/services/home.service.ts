@@ -25,12 +25,12 @@ export class HomeService {
   getHomeCharacter(id: string | null): Observable<HomeCharacter[]> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<CharacterResponse[]>(url).pipe(
-      map((characters: CharacterResponse[]) => characters.map(character => ({
-        foto: character.image,
+      map((characters: CharacterResponse[]) => characters.map((character: HomeCharacter) => ({
+        image: character.image,
         name: character.name,
         gender: character.gender,
-        planet: character.origin,
-      } as unknown as HomeCharacter)))
+        origin: character.origin,
+      })))
     );
   }
 

@@ -9,7 +9,7 @@ import { HomeComponent } from './home.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [HomeComponent],
   imports: [
     CommonModule,
     FormsModule,

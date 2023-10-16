@@ -34,10 +34,9 @@
       <img src="{{ character.image }}" alt="{{ character.name }}">
       <div>
         <h3><strong>{{ character.name }}</strong></h3>
-        <p>Status: {{ character.status }}</p>
-        <p>Species: {{ character.species }}</p>
         <p>Gender: {{ character.gender }}</p>
-        Agrega aquí más información si es necesario
+        <p>Origin: {{character.origin.name}}</p>
+
         <!-- <a [routerLink]="['/character', character.id]">Detalles</a> -->
       </div>
     </div>
