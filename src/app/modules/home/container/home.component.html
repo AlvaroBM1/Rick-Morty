@@ -1,6 +1,6 @@
 <h1>Rick y Morty</h1>
 
-<form>
+<!-- <form>
   <div>
     <div>
       <input
@@ -23,7 +23,7 @@
   </div>
 
 
-</form>
+</form> -->
 
 
 
@@ -35,7 +35,8 @@
       <div>
         <h3><strong>{{ character.name }}</strong></h3>
         <p>Gender: {{ character.gender }}</p>
-        <p>Origin: {{character.origin.name}}</p>
+        <p>Origin: {{character.origin}}</p>
+        <p>{{ character | json }}</p>
 
         <!-- <a [routerLink]="['/character', character.id]">Detalles</a> -->
       </div>
@@ -44,4 +45,4 @@
 
 </div>
 
-<div *ngIf="characters.length === 0 && name.trim() !== ''"> No se encontraron resultados</div>
+<!-- <div *ngIf="characters.length === 0 && name.trim() !== ''"> No se encontraron resultados</div> -->

@@ -15,14 +15,14 @@ import { HomeService } from '../services/home.service';
 })
 export class HomeComponent implements OnInit {
 
-  name: string = '';
-  characters: HomeCharacter[] = [];
-  selectedGender: string = '';
+  //name: string = '';
+  public characters: HomeCharacter[] = [];
+  //selectedGender: string = '';
 
   constructor(private charactersService: HomeService) { }
 
   ngOnInit(): void {
-    this.search(this.name, this.selectedGender);
+    this.getAllCharacters();
   }
 
   // // Método para manejar la búsqueda cuando se envía el formulario.
@@ -70,49 +70,39 @@ export class HomeComponent implements OnInit {
   //     });
   // }
 
-  search(name: string, gender: string): void {
-    // Verifica si 'name' y 'gender' están presentes.
-    if (name && gender) {
-      // Si ambos están presentes, construye la URL de consulta con ambos parámetros.
-      const queryParams = `?name=${name}&gender=${gender}`;
-      this.performSearch(queryParams);
-    } else if (name) {
-      // Si solo 'name' está presente, construye la URL de consulta con el parámetro 'name'.
-      const queryParams = `?name=${name}`;
-      this.performSearch(queryParams);
-    } else if (gender) {
-      // Si solo 'gender' está presente, construye la URL de consulta con el parámetro 'gender'.
-      const queryParams = `?gender=${gender}`;
-      this.performSearch(queryParams);
-    } else {
-      // Si ambos están vacíos, realiza una búsqueda sin parámetros.
-      this.performSearch('');
-    }
-  }
+  // search(name: string, gender: string): void {
+  //   // Verifica si 'name' y 'gender' están presentes.
+  //   if (name && gender) {
+  //     // Si ambos están presentes, construye la URL de consulta con ambos parámetros.
+  //     const queryParams = `?name=${name}&gender=${gender}`;
+  //     this.performSearch(queryParams);
+  //   } else if (name) {
+  //     // Si solo 'name' está presente, construye la URL de consulta con el parámetro 'name'.
+  //     const queryParams = `?name=${name}`;
+  //     this.performSearch(queryParams);
+  //   } else if (gender) {
+  //     // Si solo 'gender' está presente, construye la URL de consulta con el parámetro 'gender'.
+  //     const queryParams = `?gender=${gender}`;
+  //     this.performSearch(queryParams);
+  //   } else {
+  //     // Si ambos están vacíos, realiza una búsqueda sin parámetros.
+  //     this.performSearch('');
+  //   }
+  // }
 
-  private performSearch(queryParams: string): void {
+  private getAllCharacters(): void {
     this.charactersService
-      .searchCharacters(queryParams)
-      .pipe(
-        debounceTime(300)
-      )
-      .subscribe((response: any) => {
-        if (response && response.results && Array.isArray(response.results)) {
-          this.characters = response.results;
-        } else {
-          this.characters = [];
+      .getAllCharacters()
+      .subscribe({
+        next:(homeCharacters: HomeCharacter[]) => {
+          this.characters = homeCharacters
+          console.log('homeCharacters', homeCharacters);
+
         }
-      },
-      (error: any) => {
-        if (error.status === 404) {
-          // Aquí puedes manejar la situación en la que no se encontraron resultados.
-          this.characters = [];
-          console.error('No se encontraron personajes con ese nombre.');
-        } else {
-          // Manejar otros errores de la solicitud HTTP si es necesario.
-          console.error('Error en la solicitud HTTP:', error);
+        ,
+        error: (error: any) => {
+          console.log('Error solicitud Http', error);
         }
-      }
-    );
+      })
   }
 }

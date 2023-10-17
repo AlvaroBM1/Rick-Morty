@@ -1,1 +1,6 @@
-//definir con : para devolver lo que quieres female: "FEMALE"
+export enum CharacterGenderEnum {
+  FEMALE = 'Female',
+  MALE = 'Male',
+  GENDERLESS = 'Genderless',
+  UNKNOWN = 'Unknown'
+}

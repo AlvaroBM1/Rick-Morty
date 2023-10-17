@@ -1,12 +1,8 @@
-//foto nombre genero y planeta
-
-import { Location } from "../../shared/interfaces/character.interface";
+import { CharacterGenderEnum } from "../enums/home-character-gender.enum";
 
 export interface HomeCharacter {
-
+  gender: CharacterGenderEnum;
   image: string;
-  name: string; //enum
-  gender: string;
-  origin: Location;
-
+  name: string;
+  origin: string;
 }

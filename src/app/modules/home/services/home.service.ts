@@ -1,39 +1,61 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { CharacterResponse } from '../../shared/interfaces/character.interface';
+import { CharacterResponse } from '../interfaces/character-response.interface';
+import { CharacterGenderEnum } from "../enums/home-character-gender.enum";
 import { HomeCharacter } from '../interfaces/home-character.interface';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class HomeService {
-
-  private apiUrl = 'https://rickandmortyapi.com/api/character/'; // Reemplaza con la URL real de tu API.
 
   constructor(private http: HttpClient) {}
 
-  // Método para buscar personajes por nombre y género.
-  searchCharacters(query: string): Observable<CharacterResponse[]> {
-    const queryParams = `${query}`;
-    const url = `${this.apiUrl}${queryParams}`;
+  private baseUrl = 'https://rickandmortyapi.com/api/';
 
-    return this.http.get<CharacterResponse[]>(url);
-  }
+  // getAllCharacters(): Observable<HomeCharacter[]> {
 
-  getHomeCharacter(id: string | null): Observable<HomeCharacter[]> {
-    const url = `${this.apiUrl}/${id}`;
+  //   const url = `${this.baseUrl}character`;
+  //   return this.http.get<CharacterResponse[]>(url).pipe(
+  //     map<CharacterResponse[], HomeCharacter[]>((characters: CharacterResponse[]) => {
+  //       console.log(characters);
+  //       characters.map((character: CharacterResponse) =>
+  //       ({
+  //         image: character.image,
+  //         name: character.name,
+  //         gender: character.gender,
+  //         origin: character.origin.name,
+  //       }))
+  //     })
+  //   );
+  // }
+
+  getAllCharacters(): Observable<HomeCharacter[]> {
+    const url = `${this.baseUrl}character`;
     return this.http.get<CharacterResponse[]>(url).pipe(
-      map((characters: CharacterResponse[]) => characters.map((character: HomeCharacter) => ({
-        image: character.image,
-        name: character.name,
-        gender: character.gender,
-        origin: character.origin,
-      })))
+      map((response: CharacterResponse[]) => {
+        if (Array.isArray(response)) {
+          return response.map((character: CharacterResponse) => ({
+            image: character.image,
+            name: character.name,
+            gender: character.gender,
+            origin: character.origin.name,
+          }));
+        } else {
+          // Manejar el caso en el que la respuesta no es una matriz, por ejemplo, lanzando un error o devolviendo una matriz vacía.
+          return response;
+        }
+      })
     );
   }
 
+
+
+
+
+
+//he tenido que cambiar el character: homeCharacter por CharacterResponse, siue funcionando
+//pero creo que no es lo mejor
 //habra que hacer un map de array, si viene un array
   // Agrega otros métodos según sea necesario
 }
